@@ -24,20 +24,11 @@ static ASSETS_DIR: Dir = include_dir!("assets");
 
 #[derive(Parser, Debug)]
 struct Args {
-    #[arg(
-        short = 'v',
-        long,
-        default_value = "off",
-        help = "logging level: off, error, warn, info, debug, trace"
-    )]
+    #[arg(long, default_value = "off", help = "logging level")]
     log_level: String,
 
-    #[arg(
-        short = 'f',
-        long,
-        help = "logging file path -- if not specified print logs to console"
-    )]
-    log_file: Option<String>,
+    #[arg(long, default_value = "stdout", help = "file to write logs to")]
+    log_file: String,
 }
 
 fn main() -> wry::Result<()> {

@@ -3,7 +3,7 @@ use env_logger::{Builder, Env, Target};
 use std::fs::File;
 use std::io::Write;
 
-pub fn init(level: &str, file_path: &Option<String>) {
+pub fn init(level: &str, file_path: &str) {
     let mut builder = Builder::from_env(Env::default().default_filter_or(level));
     builder.format(|buffer, record| {
         writeln!(
@@ -17,7 +17,7 @@ pub fn init(level: &str, file_path: &Option<String>) {
         )
     });
 
-    if let Some(file_path) = file_path {
+    if file_path != "stdout" {
         if let Ok(file) = File::create(file_path) {
             builder.target(Target::Pipe(Box::new(file)));
         }
