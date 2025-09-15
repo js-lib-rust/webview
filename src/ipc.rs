@@ -66,7 +66,7 @@ pub fn ipc_handler(webview: &WebView, ipc_message: String) {
     };
 
     let parameters = Params::new(request.parameters);
-    let value = match request.type_name.as_str() {
+    let (type_name, value) = match request.type_name.as_str() {
         "console" => json(service::console(parameters)),
         "Greet" => json(service::greet(parameters)),
         "IncrementCounter" => json(service::increment_counter(parameters)),
@@ -81,8 +81,8 @@ pub fn ipc_handler(webview: &WebView, ipc_message: String) {
 
     let response = IpcResponse {
         transaction_id: request.transaction_id,
-        type_name: value.0,
-        value: value.1,
+        type_name: type_name,
+        value: value,
     };
     let response_json = serde_json::to_string(&response).unwrap();
     let script = format!("window.rpc.handleResponse({response_json})");
